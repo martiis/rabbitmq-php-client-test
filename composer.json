@@ -1,0 +1,16 @@
+{
+    "name": "martiis/rabbitmq-php-client-test",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martynas Sudintas",
+            "email": "martynas12@gmail.com"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "require": {
+        "php": ">=7.0",
+        "symfony/console": "~2.8",
+        "php-amqplib/php-amqplib": "~2.6"
+    }
+}
