@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class DirectWorkerCommand extends Command
+class Worker2Command extends Command
 {
     /**
      * {@inheritdoc}
@@ -17,7 +17,7 @@ class DirectWorkerCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('direct:worker');
+            ->setName('worker2');
     }
 
     /**
@@ -27,14 +27,14 @@ class DirectWorkerCommand extends Command
     {
         $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
         $channel = $connection->channel();
-        $channel->exchange_declare('testing_direct', 'direct', false, false, false);
+        $channel->exchange_declare('gamma', 'direct', false, false, true);
         list($queueName, ,) = $channel->queue_declare('', false, false, true, false);
-        $channel->queue_bind($queueName, 'testing_direct');
+        $channel->queue_bind($queueName, 'gamma', 'php');
 
         $io = new SymfonyStyle($input, $output);
 
         $callback = function (AMQPMessage $message) use ($io) {
-            $io->block($message->getBody(), 'x', 'info');
+            $io->block($message->getBody(), 'php', 'info');
         };
 
         $channel->basic_consume($queueName, '', false, true, false, false, $callback);
